@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -37,6 +38,12 @@ Route::group(['prefix'=>'user', 'middleware'=>['isUser', 'auth', 'PreventBackHis
     Route::get('dashboard',[UserController::class,'index'])->name('user.dashboard');
     Route::get('profile',[UserController::class,'profile'])->name('user.profile');
     Route::get('settings',[UserController::class,'settings'])->name('user.settings');
+});
+
+Route::group(['prefix'=>'staff', 'middleware'=>['isStaff', 'auth', 'PreventBackHistory']], function(){
+    Route::get('dashboard',[StaffController::class,'index'])->name('staff.dashboard');
+    Route::get('profile',[StaffController::class,'profile'])->name('staff.profile');
+    Route::get('settings',[StaffController::class,'settings'])->name('staff.settings');
 });
 
 
