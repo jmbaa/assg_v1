@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Үзий</title>
     <link rel="icon" href="{{ URL::asset('images/favicon.png') }}" type="image/x-icon"/>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
 
@@ -39,7 +40,7 @@
 
       /* Navbar Logo */
       .__navbar-logo {
-        width: 50%;
+        width: 41%;
         margin: 0 0 0 2%;
       }
 
@@ -102,17 +103,17 @@
           padding: 60px 10px;
       }
 
-      @media only screen and (max-width: 800px) {
+      @media only screen and (max-width: 1300px) {
         .__navbar-menu ul {
           display: flex;
           flex-direction: column;
           position: absolute;
           top: 0;
-          margin: 0 0 0 0;
+          margin-right: 2px;
           z-index: 1;
           background: var(--navbar_background);
           height: 100vh;
-          width: 100vw;
+          width: full;
         }
 
         .__navbar-menu-open {
@@ -192,7 +193,7 @@
         cursor: pointer;
         height: 15px;
         width: 15px;
-        margin: 0 2px;
+        margin: 2px 2px;
         background-color: #bbb;
         border-radius: 50%;
         display: inline-block;
@@ -225,6 +226,34 @@
       @media only screen and (max-width: 300px) {
         .prev, .next,.text {font-size: 11px}
       }
+      .search-container {
+        margin: 12px;
+      }
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        }
+
+        .dropdown-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        }
+
+        .dropdown-content a:hover {
+        background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+        display: block;
+        }
 
     </style>
 </head>
@@ -236,19 +265,81 @@
         </div>
         <div class="__navbar-menu">
         <ul class="__navbar-menu-close">
-          <a href="#home"><li><span>Эхлэл</span></li></a>
-          <a href="#services"><li><span>Үйлчилгээ</span></li></a>
-          <a href="#help"><li><span>Тухай</span></li></a>
-          @if (Route::has('login'))
-              @auth
-                <a href="{{ url('/home') }}" ><li><span>Эхлэл</span></li></a>
-                  @else
-                    <a href="{{ route('login') }}" ><li><span>Нэвтрэх</span></li></a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" ><li><span>Бүртгүүлэх</span></li></a>
-                        @endif
-              @endauth
-          @endif
+          <div class="search-container">
+            <form action="doSearch" method="POST">
+              @csrf
+              <div class="flex">
+                <div class="flex-1">
+                    <input type="search" name="q" class="py-1 mx-2 text-sm text-black rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Хайх..." autocomplete="off">
+                </div>
+                <div class="flex-1 hover:bg-white rounded">
+                  <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 hover:text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg></button>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+          <a href="#home" class=""><li class="mr-6">Шинэ&nbsp;кино&nbsp;нэмэх</li></a>
+          <div class="dropdown py-3 px-3">
+            <button class="dropbtn">Хэрэглэгч
+            <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content py-3">
+            <a href="#">Хэрэглэгч нэмэх</a>
+            <a href="#">Хэрэглэгчид</a>
+            </div>
+        </div> 
+        <div class="dropdown py-3 px-3">
+            <button class="dropbtn">Ажилтан
+            <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content py-3">
+            <a href="#">Ажилтан нэмэх</a>
+            <a href="#">Ажилчид</a>
+            </div>
+        </div> 
+        <div class="dropdown py-3  px-3">
+            <button class="dropbtn">Салбар
+            <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content py-3">
+            <a href="#">Салбар нэмэх</a>
+            <a href="#">Салбарууд</a>
+            <a href="#">Салбар дэх кино нэмэх</a>
+            </div>
+        </div>
+          @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
+
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="px-5" href="#" aria-expanded="false">
+                                    {{ Auth::user()->name }}
+                                </a>
+                            </li>
+                            <li>
+                                    <a class="px-5 py-3" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                        {{ __('Гарах') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                            </li>
+                        @endguest
         </ul>
         <div class="__hamburger">
           <div></div>
@@ -257,8 +348,37 @@
         </div>  
       </div>
     </nav>
-    <script>
+    <main class="py-4">
+        @yield('content')
+    </main>
 
+    <script>
+        // navbar script
+      hamburger = document.querySelector(".__hamburger");
+      hamburgerMenu = document.querySelector(".__navbar-menu ul");
+      hamburgerMenuItems = document.querySelectorAll("ul li");
+      mobileNav = false;
+      hamburger.addEventListener("click", this.mobileNavOpen);
+
+      function mobileNavOpen() {
+        if (mobileNav === false) {
+          mobileNav = true;
+          hamburgerMenu.classList.add("__navbar-menu-open");
+          hamburgerMenu.classList.remove("__navbar-menu-close");
+        } else {
+          mobileNav = false;
+          hamburgerMenu.classList.remove("__navbar-menu-open");
+          hamburgerMenu.classList.add("__navbar-menu-close");
+        }
+      }
+
+      hamburgerMenuItems.forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileNav = false;
+          hamburgerMenu.classList.remove("__navbar-menu-open");
+          hamburgerMenu.classList.add("__navbar-menu-close");
+        });
+      });
     </script>
 </body>
 </html>
