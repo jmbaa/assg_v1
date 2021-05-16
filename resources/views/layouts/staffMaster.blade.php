@@ -6,8 +6,25 @@
     <title>Үзий</title>
     <link rel="icon" href="{{ URL::asset('images/favicon.png') }}" type="image/x-icon"/>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+
+      .frame-container {
+          position: relative;
+        }
+        .iframe-button {
+          display: none;
+          position: absolute;
+          top: 124px;
+          left: 350px;
+        }
+
+      /* Only show the button when the parent is hovered: */
+
+      .frame-container:hover .iframe-button {
+        display: initial;
+      }
 
       /* base css */
       :root {
@@ -256,10 +273,10 @@
             </form>
           </div>
           
-          <a href="#home"><li  class="mr-6"><span>Кино&nbsp;нэмэх</span></li></a>
-          <a href="#homйыe"><li  class="mr-6"><span>Захиалгууд</span></li></a>
-          <a href="#servйыices"><li  class="mr-6"><span>Хүсэлт</span></li></a>
-          <a href="#services"><li  class="mr-6"><span>Кинонууд</span></li></a>
+          <a href="addMovie"><li  class="mr-6"><span>Кино&nbsp;нэмэх</span></li></a>
+          <a href="branchBooks"><li  class="mr-6"><span>Захиалгууд</span></li></a>
+          <a href="branchRequests"><li  class="mr-6"><span>Хүсэлт</span></li></a>
+          <a href="branchMovies"><li  class="mr-6"><span>Кинонууд</span></li></a>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -275,7 +292,7 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle py-3 mx-3 text-center " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle py-3 mx-3 text-center " href="profile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
                             </li>
@@ -302,6 +319,10 @@
         </div>  
       </div>
     </nav>
+
+    <main class="py-4">
+        @yield('content')
+    </main>
 
     <script>
       // navbar script

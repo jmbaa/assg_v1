@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -62,6 +63,8 @@ class LoginController extends Controller
                 return redirect()->route('admin.dashboard');
             }else if(auth()->user()->role == 2) {
                 return redirect()->route('user.dashboard');
+            }else if(auth()->user()->role == 3) {
+                return redirect()->route('staff.dashboard');
             }else { 
                 return redirect()->route('login')->with('error', 'Email and password are wrong!');
             }

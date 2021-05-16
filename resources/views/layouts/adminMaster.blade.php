@@ -6,6 +6,7 @@
     <title>Үзий</title>
     <link rel="icon" href="{{ URL::asset('images/favicon.png') }}" type="image/x-icon"/>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
 
@@ -40,7 +41,7 @@
 
       /* Navbar Logo */
       .__navbar-logo {
-        width: 41%;
+        width: 38%;
         margin: 0 0 0 2%;
       }
 
@@ -281,14 +282,15 @@
             </form>
           </div>
           
-          <a href="#home" class=""><li class="mr-6">Шинэ&nbsp;кино&nbsp;нэмэх</li></a>
+          <a href="movies" class=""><li class="mr-6">Кинонууд</li></a>
+          <a href="addNewMovie" class=""><li class="mr-6">Шинэ&nbsp;кино&nbsp;нэмэх</li></a>
           <div class="dropdown py-3 px-3">
             <button class="dropbtn">Хэрэглэгч
             <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content py-3">
-            <a href="#">Хэрэглэгч нэмэх</a>
-            <a href="#">Хэрэглэгчид</a>
+            <a href="addUser">Хэрэглэгч нэмэх</a>
+            <a href="userList">Хэрэглэгчид</a>
             </div>
         </div> 
         <div class="dropdown py-3 px-3">
@@ -296,8 +298,8 @@
             <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content py-3">
-            <a href="#">Ажилтан нэмэх</a>
-            <a href="#">Ажилчид</a>
+            <a href="addStaff">Ажилтан нэмэх</a>
+            <a href="staffList">Ажилчид</a>
             </div>
         </div> 
         <div class="dropdown py-3  px-3">
@@ -305,9 +307,9 @@
             <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content py-3">
-            <a href="#">Салбар нэмэх</a>
-            <a href="#">Салбарууд</a>
-            <a href="#">Салбар дэх кино нэмэх</a>
+            <a href="addBranch">Салбар нэмэх</a>
+            <a href="branchList">Салбарууд</a>
+            <a href="addMovieBranch">Салбар дэх кино нэмэх</a>
             </div>
         </div>
           @guest
@@ -323,8 +325,8 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="px-5" href="#" aria-expanded="false">
+                            <li class="nav-item dropdown py-3">
+                                <a id="navbarDropdown" class="px-5" href="profile" aria-expanded="false">
                                     {{ Auth::user()->name }}
                                 </a>
                             </li>
