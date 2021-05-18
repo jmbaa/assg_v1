@@ -25,7 +25,18 @@ class UserController extends Controller
     }
 
     function movies(){
-        return view('dashboard.users.movies');
+        $movies = Content::all();
+        return view('dashboard.users.index')->with('movies', $movies);
+    } 
+
+    function bestMovies(){
+
+        $movies = DB::table('content')
+                ->orderBy('numberOfRented', 'DESC')
+                ->get();
+
+        // return $movies;
+        return view('dashboard.users.index')->with('movies', $movies);
     } 
     function myBook(){
         $myBooks = DB::table('book')
@@ -57,10 +68,10 @@ class UserController extends Controller
     }
 
     function saveBook(Request $req){
-        $req->validate([
-            'branch' => ['required'],
-            'branchContentID' => ['required'],
-        ]);
+        // $req->validate([
+        //     'branch' => ['required'],
+        //     'branchContentID' => ['required'],
+        // ]);
         
         $book = new Book();
 
@@ -68,6 +79,7 @@ class UserController extends Controller
         $book->branch_content_id = $req->branchContentID;
         $book->status = 'booked';
 
+        // return  $req->branchContentID;
         if($book->save()){
             return redirect()->back()->with('success', 'Захиалга баталгаажлаа!');
         }else{
@@ -75,6 +87,38 @@ class UserController extends Controller
         }
     }
 
+    function doSearch(Request $req){
+        if($req->ajax()){
+            $query = $req('query');
+            if($query != ""){
+                $data = DB::table('content')
+                    ->where('mname', 'like', '%'.$query.'%')
+                    ->where('author', 'like', '%'.$query.'%')
+                    ->where('producer', 'like', '%'.$query.'%')
+                    ->where('genre', 'like', '%'.$query.'%')
+                    ->where('contentType', 'like', '%'.$query.'%')
+                    ->orderBy('contentID', 'desc')
+                    ->get();
+
+            }else {
+                $data = '';
+            }
+        }
+
+        $total_row = $data->count();
+
+        if($total_row > 0){
+            $output = $total_row;
+        }else {
+            $output = "хайлт илэрцгүй";
+        }
+
+        $data = array(
+            'table_data' => $output,
+            'total_data' => $total_data);
+
+        echo json_encode($data);
+    }
     function saveInformation(Request $req){
         $req->validate([
             'id' => ['required'],

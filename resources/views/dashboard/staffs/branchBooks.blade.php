@@ -8,6 +8,19 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
                 
                 <div class="gap-4 w-full px-10 py-1 border rounded">
+
+                                @if ( Session::get('success'))
+                                    <div class="bg-green-200 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md">
+                                        {{ Session::get('success')}}
+                                    </div>
+                                @endif
+
+                                @if ( Session::get('error'))
+                                    <div class="bg-red-200 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md">
+                                        {{ Session::get('error')}}
+                                    </div>
+                                @endif
+
                     <table  class="table-auto border-separate w-full gap-2">
                             <tr>
                                 <th>Захиалгын дугаар</th>
@@ -37,29 +50,19 @@
                                     <th>
                                     
                                     <form action="branchBooks" method="post">
-                                            @csrf
+                                            @csrf 
 
-                                        <select name="status" value="
-                                            @if($book->status == 'booked')
-                                                Захиалсан
-                                            @elseif($book->status == 'started')
-                                                Эхэлсэн
-                                            @elseif($book->status == 'ended')
-                                                Дууссан
-                                            @elseif($book->status == 'ignored')
-                                                Хударсан
-                                            @endif">
-
-                                            <option value="booked">Захиалсан</option>
-                                            <option value="started">Эхэлсэн</option>
-                                            <option value="ended">Дууссан</option>
-                                            <option value="ignored">Хударсан</option>
+                                        <select name="status" value="">
+                                            <option value="booked"    @if($book->status == 'booked')  selected @endif > Захиалсан</option>
+                                            <option value="started"   @if($book->status == 'started') selected @endif > Эхэлсэн</option>
+                                            <option value="ended"     @if($book->status == 'ended')   selected @endif > Дууссан </option>
+                                            <option value="ignored"   @if($book->status == 'ignored') selected @endif > Хударсан </option>
                                         </select>
                                         
-                                    </th>
-                                    <th>{{ date("h:m:s", strtotime(time()) - strtotime($book->bcreated_at) )}}</th>
-                                    <th>
-                                            <input type="hidden" name="id" value="{{$book->id}}">
+                                        </th>
+                                        <th>{{ date("h:m:s", strtotime(time()) - strtotime($book->bcreated_at) )}}</th>
+                                        <th>
+                                            <input type="hidden" name="id" value="{{$book->bookID}}">
                                             <button type="submit" class="bg-green-500 text-white hover:bg-green-200 px-2 py-1 rounded">Хадгалах</button>
                                         </form>
                                     </th>

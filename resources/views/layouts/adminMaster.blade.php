@@ -10,6 +10,21 @@
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
 
+      .frame-container {
+          position: relative;
+        }
+        .iframe-button {
+          display: none;
+          position: absolute;
+          top: 124px;
+          left: 350px;
+        }
+
+      /* Only show the button when the parent is hovered: */
+
+      .frame-container:hover .iframe-button {
+        display: initial;
+      }
       /* base css */
       :root {
         --navbar_background: #0085c9;
@@ -282,7 +297,7 @@
             </form>
           </div>
           
-          <a href="movies" class=""><li class="mr-6">Кинонууд</li></a>
+          <a href="dashboard" class=""><li class="mr-6">Кинонууд</li></a>
           <a href="addNewMovie" class=""><li class="mr-6">Шинэ&nbsp;кино&nbsp;нэмэх</li></a>
           <div class="dropdown py-3 px-3">
             <button class="dropbtn">Хэрэглэгч

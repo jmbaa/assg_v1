@@ -54,7 +54,14 @@ class StaffController extends Controller
     }
 
     function branchMovies(){
-        return view('dashboard.staffs.branchMovies');
+        $movies = DB::table('content')
+        ->join('branch_content', function ($join) {
+            $join->on('content.contentID', '=', 'branch_content.content_id')
+                ->where('branch_content.branch_id', '=', Auth::user()->branch_id);
+        })
+        ->get();
+
+        return view('dashboard.staffs.branchMovies')->with('movies', $movies);
     }
 
     function getMoreInformation(Request $req){
@@ -73,10 +80,10 @@ class StaffController extends Controller
     }
 
     function saveBook(Request $req){
-        $req->validate([
-            'branch' => ['required'],
-            'branchContentID' => ['required'],
-        ]);
+        // $req->validate([
+        //     'branch' => ['required'],
+        //     'branchContentID' => ['required'],
+        // ]);
         
         $book = new Book();
 
@@ -115,9 +122,29 @@ class StaffController extends Controller
                 ->where('bookID', $req->id)
                 ->update(['status' => $req->status]);
 
-        // return $row;
+        // return $req;
 
         if($row){
+            return redirect()->back()->with('success', 'Мэдээлэл хадгалагдлаа!');
+        }else{
+            return redirect()->back()->with('error', 'Мэдээлэл хадгалагдсангүй!');
+        }
+    }
+
+    function saveInformation(Request $req){
+        $req->validate([
+            'id' => ['required'],
+            'name' => ['required'],
+            'phone' => ['required'],
+            'email' => ['required'],
+        ]);
+
+        $flight = User::find($req->id);
+        $flight->name = $req->name;
+        $flight->phone = $req->phone;
+        $flight->email = $req->email;
+
+        if($flight->save()){
             return redirect()->back()->with('success', 'Мэдээлэл хадгалагдлаа!');
         }else{
             return redirect()->back()->with('error', 'Мэдээлэл хадгалагдсангүй!');

@@ -28,7 +28,6 @@
                     <form action="saveBook" method="post" class="space-y-4 border-1 rounded shadow-2xl py-10 px-10">
 
                     @csrf
-                                
                         <div class="grid grid-cols-2 gap-4">
                             <label class="flex justify-end">
                                 Зохиолч:
@@ -75,18 +74,13 @@
                         
                         @if(isset($branch))
                             @if($branch != "[]")
-                                @foreach ($branch as $item)
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="flex justify-end">
-                                            <input  type="radio" id="{{$item->branchID}}" name="branch" value="{{$item->branchID}}">
-                                            <input  type="hidden" name="branchContentID" value="{{$item->branchContentID}}">
-                                        </div>
-
-                                        <div>
-                                            <label for="{{$item->branchID}}">{{$item->bname}}</label><br>
-                                        </div>
-                                    </div>
-                                @endforeach
+                                <div class="text-center shadow">
+                                    <select name="branchContentID" id="cars" class="" >
+                                        @foreach ($branch as $item)
+                                            <option value="{{$item->branchContentID}}">{{$item->branchID}}. {{$item->bname}}</option>
+                                        @endforeach
+                                    </select>
+                                </div> 
                                 <div class="grid grid-cols-2 gap-4">
                                     <a href="/user/dashboard" class="rounded-2xl w-40 py-1 text-white bg-red-500 ml-20 justify-center px-14">Буцах</a>
                                     <button type="submit" class="bg-green-500 rounded-2xl w-40 py-1 text-white">Захиалах</button>

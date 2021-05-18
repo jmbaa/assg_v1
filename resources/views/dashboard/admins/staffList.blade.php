@@ -16,13 +16,15 @@
                             <th>Цахим хаяг</th>
                             <th>Салбар</th>
                         </tr>
-                        <tr>
-                            <th>ааа</th>
-                            <th>ааа</th>
-                            <th>ааа</th>
-                            <th>ааа</th>
-                            <th>ааа</th>
-                        </tr>
+                        @foreach($users as $user)
+                            <tr>
+                                <th>{{$user->id}}</th>
+                                <th>{{$user->name}}</th>
+                                <th>{{$user->phone}}</th>
+                                <th>{{$user->email}}</th>
+                                <th>{{$user->branch_id}}</th>
+                            </tr>
+                        @endforeach
                     </table>
                 </div>
             </div>

@@ -4,6 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Үзий</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="icon" href="{{ URL::asset('images/favicon.png') }}" type="image/x-icon"/>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     
@@ -66,7 +67,7 @@
 
       .__navbar-menu {
         display: flex;
-        width: 50%;
+        width: 37%;
         margin: 0 0 0 0;
         height: 100%;
         align-items: center;
@@ -263,7 +264,7 @@
               @csrf
               <div class="flex">
                 <div class="flex-1">
-                    <input type="search" name="q" class="py-1 mx-2 text-sm text-black rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Хайх..." autocomplete="off">
+                    <input type="search" name="search"  id="search" class="py-1 mx-2 text-sm text-black rounded-md pl-10 focus:outline-none focus:bg-white focus:text-gray-900" placeholder="Хайх..." autocomplete="off">
                 </div>
                 <div class="flex-1 hover:bg-white rounded">
                   <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 hover:text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -275,6 +276,7 @@
           </div>
           
           <a href="movies"><li  class="mr-6"><span>Бүх&nbsp;кинонууд</span></li></a>
+          <a href="bestMovies"><li  class="mr-6"><span>Шилдэг&nbsp;кинонууд</span></li></a>
           <a href="myBook"><li  class="mr-6"><span>Миний&nbsp;захиалгууд</span></li></a>
                         <!-- Authentication Links -->
                         @guest
@@ -319,6 +321,8 @@
       </div>
 
     </nav>
+
+      <input type="text" id="total_records" name="total_records" value="a"> 
       <main class="py-4">
         @yield('content')
       </main>
@@ -349,6 +353,28 @@
           hamburgerMenu.classList.remove("__navbar-menu-open");
           hamburgerMenu.classList.add("__navbar-menu-close");
         });
+      });
+
+      $(document).ready(function(){
+        fetch_costumer_data();
+        function fetch_costumer_data(query = ''){
+          $.ajax({
+            url:"{{route('user.doSearch')}}",
+            method: 'GET',
+            data:{query:query}, 
+            dataType: 'json'
+            success: function(data)
+            {
+              $('tbody').html(data.table_data);
+              $('$total_records').text(data.total_data); 
+            }
+          })
+        }
+      });
+
+      $(document).on('keyup', '#search', function(){
+        var = query = $(this).val();
+        fetch-fetch_costumer_data(query);
       });
     </script>
 </body>

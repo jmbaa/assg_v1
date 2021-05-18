@@ -65,7 +65,7 @@
 
       .__navbar-menu {
         display: flex;
-        width: 50%;
+        width: 27%;
         margin: 0 0 0 0;
         height: 100%;
         align-items: center;
@@ -272,11 +272,11 @@
               </div>
             </form>
           </div>
-          
+          <a href="dashboard"><li  class="mr-6"><span>Бүх&nbsp;кинонууд</span></li></a>
           <a href="addMovie"><li  class="mr-6"><span>Кино&nbsp;нэмэх</span></li></a>
           <a href="branchBooks"><li  class="mr-6"><span>Захиалгууд</span></li></a>
           <a href="branchRequests"><li  class="mr-6"><span>Хүсэлт</span></li></a>
-          <a href="branchMovies"><li  class="mr-6"><span>Кинонууд</span></li></a>
+          <a href="branchMovies"><li  class="mr-6"><span>Салбар&nbsp;дахь&nbsp;кинонууд</span></li></a>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

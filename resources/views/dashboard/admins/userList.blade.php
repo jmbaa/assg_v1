@@ -15,12 +15,14 @@
                             <th>Утас</th>
                             <th>Цахим хаяг</th>
                         </tr>
-                        <tr>
-                            <th>aaaaaaaa</th>
-                            <th>aaaaaaaa</th>
-                            <th>aaaaaaaa</th>
-                            <th>aaaaaaaa</th>
-                        </tr>
+                        @foreach($users as $user)
+                            <tr>
+                                <th>{{$user->id}}</th>
+                                <th>{{$user->name}}</th>
+                                <th>{{$user->phone}}</th>
+                                <th>{{$user->email}}</th>
+                            </tr>
+                        @endforeach
                     </table>
                 </div>
             </div>

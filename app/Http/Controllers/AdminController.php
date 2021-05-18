@@ -1,8 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Content;
+use App\Models\Book;
+use App\Models\User;
+use App\Models\Branch;
+use App\Models\BranchContent;
+use Illuminate\Support\Facades\Auth;
+use DB;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +16,42 @@ use Illuminate\Support\Facades\Validator;
 class AdminController extends Controller
 {
     function index(){
-        return view('dashboard.admins.index');
+        $movies = Content::all();
+        return view('dashboard.admins.index')->with('movies', $movies);
+    }
+
+    function getMoreInformation(Request $req){
+        $content = DB::table('content')->where('contentID', $req->id)->first();
+
+        $branch = DB::table('branch_content')
+        ->join('branch', function ($join) use($req) {
+            $join->on('branch_content.branch_id', '=', 'branch.branchID')
+                ->where('branch_content.content_id', '=', $req->id);
+        })
+        ->get();
+        
+        // $array = json_encode($branch);
+        // return $array;
+        return view('dashboard.admins.index')->with('movie', $content)->with('branch', $branch);
+    }
+
+    function saveBook(Request $req){
+        // $req->validate([
+        //     'branch' => ['required'],
+        //     'branchContentID' => ['required'],
+        // ]);
+        
+        $book = new Book();
+
+        $book->user_id = Auth::id();
+        $book->branch_content_id = $req->branchContentID;
+        $book->status = 'booked';
+
+        if($book->save()){
+            return redirect()->back()->with('success', 'Захиалга баталгаажлаа!');
+        }else{
+            return redirect()->back()->with('error', 'Захиалга баталгаажсангүй!');
+        }
     }
 
     function profile(){
@@ -34,14 +75,82 @@ class AdminController extends Controller
     function addUser(){
         return view('dashboard.admins.addUser');
     }
-    function branchList(){
-        return view('dashboard.admins.branchList');
+
+    function doaddUser(Request $request){
+
+        $user = new User();
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->role = 2;
+        $user->password = \Hash::make($request->pass);
+
+        if($user->save()){
+            return redirect()->back()->with('success', 'Хэрэглэгч бүртгэгдлээ!');
+        }else{
+            return redirect()->back()->with('error', 'Хэрэглэгч бүртгэгдсэнгүй!');
+        }
+    } 
+
+    function doaddStaff(Request $request){
+        $user = new User();
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->role = 2;
+        $user->password = \Hash::make($request->pass);
+        $user->branch_id = $request->branch;
+
+        if($user->save()){
+            return redirect()->back()->with('success', 'Ажилтан бүртгэгдлээ!');
+        }else{
+            return redirect()->back()->with('error', 'Ажилтан бүртгэгдсэнгүй!');
+        }
     }
+
+    function doaddBranch(Request $request){
+        $user = new Branch();
+
+        $user->bname = $request->name;
+        $user->location = $request->location;
+
+        if($user->save()){
+            return redirect()->back()->with('success', 'Салбар бүртгэгдлээ!');
+        }else{
+            return redirect()->back()->with('error', 'Салбар бүртгэгдсэнгүй!');
+        }
+    }
+
+    function branchList(){
+        $branches = Branch::all();
+        return view('dashboard.admins.branchList')->with('branches', $branches);
+    }
+
+    function reSaveBranchList(Request $req){
+        $row = DB::table('branch')
+                ->where('branchID', $req->id)
+                ->update(['bname' => $req->name]);
+                
+        $row1 = DB::table('branch')
+            ->where('branchID', $req->id)
+            ->update(['location' => $req->location]);
+
+        return redirect()->back()->with('success', 'Салбар засагдлаа!');
+    }
+
     function staffList(){
-        return view('dashboard.admins.staffList');
+        $users = DB::table('users')
+                ->where('branch_id', '!=', NULL)
+                ->get();
+
+        // return $users;
+        return view('dashboard.admins.staffList')->with('users', $users);
     }
     function userList(){
-        return view('dashboard.admins.userList');
+        $users = User::all();
+        return view('dashboard.admins.userList')->with('users', $users);
     }
     function addNewMovie(){
         return view('dashboard.admins.addNewMovie');
@@ -71,7 +180,7 @@ class AdminController extends Controller
 
         $content = new Content();
 
-        $content->name = $request->name;
+        $content->mname = $request->name;
         $content->author = $request->author;
         $content->producer = $request->producer;
         $content->genre = $request->genre;

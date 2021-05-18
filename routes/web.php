@@ -39,19 +39,24 @@ Route::post('/home', [App\Http\Controllers\HomeController::class, 'getMoreInform
 
 Route::group(['prefix'=>'admin', 'middleware'=>['isAdmin', 'auth', 'PreventBackHistory']], function(){
     Route::get('dashboard',[AdminController::class,'index'])->name('admin.dashboard');
+    Route::post('dashboard',[AdminController::class,'getMoreInformation'])->name('admin.dashboard');
     Route::get('profile',[AdminController::class,'profile'])->name('admin.profile');
     Route::get('settings',[AdminController::class,'settings'])->name('admin.settings');
     
     Route::get('addNewMovie',[AdminController::class,'addNewMovie'])->name('admin.addNewMovie');
     Route::post('addNewMovie',[AdminController::class,'doaddNewMovie'])->name('admin.doaddNewMovie');
     Route::get('addBranch',[AdminController::class,'addBranch'])->name('admin.addBranch');
+    Route::post('addBranch',[AdminController::class,'doaddBranch'])->name('admin.addBranch');
     Route::get('addMovieBranch',[AdminController::class,'addMovieBranch'])->name('admin.addMovieBranch');
     Route::get('addStaff',[AdminController::class,'addStaff'])->name('admin.addStaff');
+    Route::post('addStaff',[AdminController::class,'doaddStaff'])->name('admin.addStaff');
     Route::get('addUser',[AdminController::class,'addUser'])->name('admin.addUser');
+    Route::post('doaddUser',[AdminController::class,'doaddUser'])->name('admin.addUser');
     Route::get('branchList',[AdminController::class,'branchList'])->name('admin.branchList');
+    Route::post('branchList',[AdminController::class,'reSaveBranchList'])->name('admin.branchList');
     Route::get('staffList',[AdminController::class,'staffList'])->name('admin.staffList');
     Route::get('userList',[AdminController::class,'userList'])->name('admin.userList');
-
+    Route::post('saveBook',[AdminController::class,'saveBook'])->name('admin.saveBook');
 });
 
 Route::group(['prefix'=>'user', 'middleware'=>['isUser', 'auth', 'PreventBackHistory']], function(){
@@ -62,7 +67,10 @@ Route::group(['prefix'=>'user', 'middleware'=>['isUser', 'auth', 'PreventBackHis
     Route::get('movies',[UserController::class,'movies'])->name('user.movies');
     Route::get('myBook',[UserController::class,'myBook'])->name('user.myBook');
     Route::post('saveBook',[UserController::class,'saveBook'])->name('user.saveBook'); 
+    Route::post('doSearch',[UserController::class,'doSearch'])->name('user.doSearch'); 
     Route::post('saveInformation',[UserController::class,'saveInformation'])->name('user.saveInformation');
+    Route::post('doSearch',[UserController::class,'doSearch'])->name('user.doSearch');
+    Route::get('bestMovies',[UserController::class,'bestMovies'])->name('user.bestMovies');
 });
 
 Route::group(['prefix'=>'staff', 'middleware'=>['isStaff', 'auth', 'PreventBackHistory']], function(){
@@ -77,6 +85,7 @@ Route::group(['prefix'=>'staff', 'middleware'=>['isStaff', 'auth', 'PreventBackH
     Route::get('branchRequests',[StaffController::class,'branchRequests'])->name('staff.branchRequests');
     Route::get('branchMovies',[StaffController::class,'branchMovies'])->name('staff.branchMovies');
     Route::post('saveBook',[StaffController::class,'saveBook'])->name('staff.saveBook');
+    Route::post('saveInformation',[StaffController::class,'saveInformation'])->name('staff.saveInformation');
 });
 
 
